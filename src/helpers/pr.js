@@ -195,8 +195,12 @@ export const handleWebhookEvent = webhookData => {
     return axios
       .post(slackUrl, {
         'channel': '#handsup-release',
-        'text': `${webhookData.release.name} 於 ${webhookData.release.published_at} 發車啦`,
         'blocks': [{
+          'type': 'section',
+          'text': {
+            'text': `${webhookData.release.name} 於 ${webhookData.release.published_at} 發車啦`
+          }
+        }, {
           'type': 'section',
           'text': {
             'type': 'mrkdwn',
