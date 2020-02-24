@@ -8,6 +8,8 @@ const userAgent = {
   'Authorization': `Basic ${Base64.encode(process.env.GH_USER + ':' + process.env.GH_TOKEN)}`
 }
 
+const slackUrl = process.env.SLACK_HOOK
+
 /**
  * Compares the merged time to the current time and determines if the pr was
  * merged too long ago.  PRs should be merged within 5 minutes of a webhook
@@ -185,6 +187,26 @@ export const handleWebhookEvent = webhookData => {
           } Request to GitHub releases endpoint failed. ${
             err.response.data.message
           }`
+        }
+      })
+  }
+
+  if (webhookData.action == 'published' && !!webhookData.release ) {
+    return axios
+      .post(slackUrl, {
+        'channel': '#handsup-release',
+        'text': `${webhookData.release.name} 於 ${webhookData.release.published_at} 發車啦`,
+        'blocks': [{
+          'type': 'section',
+          'text': {
+            'type': 'mrkdwn',
+            'text': webhookData.release.body
+          }
+        }]
+      })
+      .catch(error => {
+        return {
+          error: `${error.response.status} slack error ${error.response.data.message}`
         }
       })
   }
