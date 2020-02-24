@@ -194,10 +194,11 @@ export const handleWebhookEvent = webhookData => {
   if (webhookData.action == 'published' && !!webhookData.release ) {
     return axios
       .post(slackUrl, {
-        'channel': '#handsup-release',
+        'channel': '@FK',
         'blocks': [{
           'type': 'section',
           'text': {
+            'type': 'mrkdwn',
             'text': `${webhookData.release.name} 於 ${webhookData.release.published_at} 發車啦`
           }
         }, {
@@ -209,6 +210,7 @@ export const handleWebhookEvent = webhookData => {
         }]
       })
       .catch(error => {
+        console.log(error)
         return {
           error: `${error.response.status} slack error ${error.response.data.message}`
         }
