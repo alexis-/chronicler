@@ -194,7 +194,7 @@ export const handleWebhookEvent = webhookData => {
   if (webhookData.action == 'published' && !!webhookData.release ) {
     return axios
       .post(slackUrl, {
-        'channel': '@FK',
+        'channel': '#handsup-release',
         'blocks': [{
           'type': 'section',
           'text': {
