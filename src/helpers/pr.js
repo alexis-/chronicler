@@ -199,7 +199,7 @@ export const handleWebhookEvent = webhookData => {
           'type': 'section',
           'text': {
             'type': 'mrkdwn',
-            'text': `${webhookData.release.name} 於 ${webhookData.release.published_at} 發車啦`
+            'text': `${webhookData.repository.name} ${webhookData.release.name} 於 ${webhookData.release.published_at} 發車啦`
           }
         }, {
           'type': 'section',
