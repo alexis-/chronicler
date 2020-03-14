@@ -1,7 +1,9 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import auth from './helpers/auth'
-import handleWebhookEvent from './helpers/pr'
+import handlePushEvent from './helpers/push'
+import handlePullRequestEvent from './helpers/pr'
+import logger from './helpers/logger'
 
 const app = express()
 const PORT = process.env.NODE_PORT || 8080
@@ -13,28 +15,42 @@ app.get('/ping', (req, res) => {
   return res.status(200).send('OK')
 })
 
-app.post('/webhooks', (req, res) => {
+app.post('/webhooks', (req, resp) => {
   // authenticate request
   const authentication = auth(req)
+  
   if (authentication.error) {
-    return res.status(authentication.error).send(authentication)
+    return resp.status(authentication.error).send(authentication)
   }
 
-  handleWebhookEvent(req.body)
+  let promise
+
+  if (req.body.commits)
+    promise = handlePushEvent(req.body)
+
+  else if (req.body.pull_request)
+    promise = handlePullRequestEvent(req.body)
+
+  else
+    return resp.status(200).send('ignored')
+
+  promise
     .then(result => {
       if (result && result.error) {
         return Promise.reject(result.error)
       }
 
-      return res.status(200).send('Webhooks')
+      logger.info(result)
+
+      return resp.status(200).send('Webhooks')
     })
     .catch(error => {
-      console.error(error)
+      logger.error(error)
 
-      return res.status(500).send(error)
+      return resp.status(500).send(error)
     })
 })
 
 app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`)
+  logger.info(`listening on port ${PORT}`)
 })

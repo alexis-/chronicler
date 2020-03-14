@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/NYTimes/chronicler"
+    "url": "https://github.com/Alexis-/chronicler"
   },
   "author": "Yuraima",
   "license": "Apache",
   "bugs": {
-    "url": "https://github.com/NYTimes/chronicler/issues"
+    "url": "https://github.com/Alexis-/chronicler/issues"
   },
-  "homepage": "https://github.com/NYTimes/chronicler#readme",
+  "homepage": "https://github.com/Alexis-/chronicler#readme",
   "devDependencies": {
     "ava": "^2.4.0",
     "babel-eslint": "^8.2.6",
@@ -28,12 +28,14 @@
     "nodemon": "^1.19.4"
   },
   "dependencies": {
+    "app-root-path": "^3.0.0",
     "axios": "^0.18.1",
     "body-parser": "^1.19.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "js-base64": "^2.5.2",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "winston": "^3.2.1"
   },
   "ava": {
     "require": [
